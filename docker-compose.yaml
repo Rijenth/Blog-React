@@ -13,17 +13,13 @@ services:
     db:
         image: 'mariadb'
         restart: always
-        ports:
-            - '3306:3306'
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: blog
+            MYSQL_DATABASE: data
             MYSQL_USER: root
-            MYSQL_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: password
         volumes:
             # Pour lancer un dump automatiquement au montage du conteneur
             - ./database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
-
 
     phpmyadmin:
         image: phpmyadmin
@@ -31,10 +27,5 @@ services:
         ports:
             - '8080:80'
         environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=blog
-            - MYSQL_USER=root
-            - MYSQL_PASSWORD=root
             - PMA_ARBITRARY=1
-
     # TODO: Ajouter la react app(vite)

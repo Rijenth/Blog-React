@@ -12,9 +12,4 @@ RUN apt-get update -y \
     && pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini && docker-php-ext-enable yaml
 
 RUN curl -sS https://getcomposer.org/installer | php -- \
-        &&  mv composer.phar /usr/local/bin/composer
-
-
-#RUN apt-get update -y
-#RUN apt-get install libyaml-dev -y
-#RUN pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini && docker-php-ext-enable yaml
+    &&  mv composer.phar /usr/local/bin/composer

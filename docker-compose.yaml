@@ -29,7 +29,7 @@ services:
         environment:
             - PMA_ARBITRARY=1
     # TODO: Ajouter la react app(vite)
-    app: # is in ./frontend and doesn't need a Dockerfile, it's a vite app. We use yarn, and package.json is in ./frontend
+    app:
         build:
             context: ./frontend
             dockerfile: Dockerfile
@@ -37,6 +37,7 @@ services:
             - '3000:3000'
         volumes:
             - ./frontend:/app
-        command: yarn dev
+            # use npm instead of yarn
+        command: sh -c "npm rebuild esbuild && yarn dev"
         
 

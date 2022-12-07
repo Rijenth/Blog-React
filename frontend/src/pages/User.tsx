@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useJwt } from "react-jwt";
 
-import { Loader, Title } from "@mantine/core";
+import { Loader, Title, Button } from "@mantine/core";
 import LogoutBtn from "../components/logout.btn";
 
 interface IdecodedToken {
@@ -46,6 +46,13 @@ export default function User() {
         <p>Last Name: {decodedToken?.lastName}</p>
         <p>Gender: {decodedToken?.gender}</p>
         <p>Role: {decodedToken?.role}</p>
+        <Button
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        >
+          Home Page
+        </Button>
       </div>
     );
   };

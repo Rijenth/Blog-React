@@ -15,4 +15,10 @@ services:
       - 3000:3000
     command: sh -c "yarn && yarn dev"
 
+    # convert the above to a dockerfile
+
+
+
+
+
   

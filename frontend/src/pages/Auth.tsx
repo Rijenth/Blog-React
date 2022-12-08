@@ -205,6 +205,13 @@ function LoginForm(): JSX.Element {
     password: "",
   });
 
+  const data =
+    loginValues.email.trim().length > 0 && !loginValues.email.includes("@")
+      ? ["gmail.com", "outlook.com", "yahoo.com"].map(
+          (provider) => `${loginValues.email}@${provider}`
+        )
+      : [];
+
   const handleSubmit = async (): Promise<void> => {
     let loginData = new FormData();
     loginData.append("email", loginValues.email);
@@ -214,23 +221,27 @@ function LoginForm(): JSX.Element {
       method: "POST",
       body: loginData,
     }).then((response) => {
-      if (response.ok) {
+      /* if (response.ok) {
         window.location.href = "/";
-      }
+      } */
+      console.log(response);
     });
-
-    console.log(response);
   };
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
+    <div className={classes.form}>
       <h1>Connexion : </h1>
-      <TextInput
+      <Autocomplete
+        data={data}
         placeholder="Email"
         value={loginValues.email}
         className={classes.input}
-        onChange={(event) =>
-          setLoginValues({ ...loginValues, email: event.currentTarget.value })
+        onChange={(event) => setLoginValues({ ...loginValues, email: event })}
+        error={
+          loginValues.email.trim().length > 0 &&
+          !emailRegex.test(loginValues.email)
+            ? "Email invalide"
+            : undefined
         }
       />
       <PasswordInput
@@ -250,7 +261,16 @@ function LoginForm(): JSX.Element {
             : undefined
         }
       />
-      <Button type="submit">Se connecter</Button>
+      <Button
+        onClick={handleSubmit}
+        disabled={
+          loginValues.email.trim().length === 0 ||
+          loginValues.password.trim().length === 0 ||
+          !emailRegex.test(loginValues.email)
+        }
+      >
+        Se connecter
+      </Button>
       <Divider size="xl" />
       <Button
         onClick={() => (window.location.href = "/auth/register")}
@@ -259,7 +279,7 @@ function LoginForm(): JSX.Element {
       >
         S'inscrire
       </Button>
-    </form>
+    </div>
   );
 }
 

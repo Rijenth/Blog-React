@@ -22,6 +22,24 @@ export default function Home() {
         User Page
       </Button>
 
+      <Button
+        onClick={() => {
+          fetch("http://localhost:5656/api/getPosts", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              //Authorization: `Bearer ${sessionToken}`,
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
+        }}
+      >
+        Get Posts
+      </Button>
+
       {}
     </div>
   );

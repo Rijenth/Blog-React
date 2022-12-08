@@ -5,6 +5,8 @@ namespace App\Manager;
 use App\Entity\User;
 use App\Factory\PDOFactory;
 use App\Interfaces\Database;
+// JWT token generator
+use Firebase\JWT\JWT;
 
 class UserManager extends BaseManager
 {
@@ -58,6 +60,14 @@ class UserManager extends BaseManager
     {
         $user = $this->UserNameExist($username);
 
+        $token = [
+            "iss" => "http://localhost:5656", // issuer
+            "aud" => "http://localhost:3000", // audience
+            "iat" => time(),
+            "nbf" => time(),
+            "exp" => time() + 60 * 60,
+        ];
+
 
         if ($user === false) {
             return http_response_code(404);
@@ -72,10 +82,23 @@ class UserManager extends BaseManager
             $_SESSION["userid"] = $user->getId();
             $_SESSION["user"] = $user->getUsername();
             $_SESSION['roles'] = $user->getRoles();
+            // modify the token
+            $token["user"] = $user->getUsername();
+            $token["roles"] = $user->getRoles();
+            $token["id"] = $user->getId();
+            $jwt = JWT::encode($token, "jaimelespates", "HS256");
+            echo json_encode([
+                "token" => $jwt,
+                "user" => $user->getUsername(),
+                "roles" => $user->getRoles(),
+                "id" => $user->getId(),
+            ]);
         }
 
+
         echo json_encode([
-            "res" => $checkPass
+            "res" => $checkPass,
+
         ]);
     }
     public function register(User $user): void

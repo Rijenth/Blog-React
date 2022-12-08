@@ -7,6 +7,7 @@ use App\Factory\PDOFactory;
 use App\Manager\UserManager;
 use App\Route\Route;
 
+
 class UserController extends AbstractController
 {
     #[Route('/api/register', name: 'createUser', methods: ['POST'])]
@@ -40,7 +41,7 @@ class UserController extends AbstractController
 
         return http_response_code(200);
     }
-    
+
     #[Route('/api/login', name: 'createUser', methods: ['POST'])]
     public function loginUser()
     {

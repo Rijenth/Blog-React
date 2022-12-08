@@ -1,14 +1,20 @@
 {
-    "name": "root/html",
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
+  "name": "root/html",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kader"
     },
-    "authors": [
-        {
-            "name": "Bob"
-        }
-    ],
-    "require": {}
+    {
+      "name": "Rijenth"
+    },
+    {
+      "name": "Ethan"
+    }
+  ],
+  "require": {}
 }

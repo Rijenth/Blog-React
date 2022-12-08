@@ -1,5 +1,7 @@
 # Comment lancer le truc
 
-`cd frontend && yarn install && cd .. && docker-compose up -d`
+mettre à jour le conteneur front + lancer le up :
 
-**UNIQUEMENT SUR WINDOWS**
+`docker-compose up -d --build`
+
+Testé et approuvé sur Windows + Linux

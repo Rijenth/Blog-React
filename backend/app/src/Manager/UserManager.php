@@ -78,7 +78,6 @@ class UserManager extends BaseManager
         if ($checkPass === false) {
             return http_response_code(404);
         } else {
-            session_start();
             $_SESSION["userid"] = $user->getId();
             $_SESSION["user"] = $user->getUsername();
             $_SESSION['roles'] = $user->getRoles();
@@ -89,17 +88,9 @@ class UserManager extends BaseManager
             $jwt = JWT::encode($token, "jaimelespates", "HS256");
             echo json_encode([
                 "token" => $jwt,
-                "user" => $user->getUsername(),
-                "roles" => $user->getRoles(),
-                "id" => $user->getId(),
-            ]);
-        }
-
-
-        echo json_encode([
-            "res" => $checkPass,
-
+                "res" => true
         ]);
+        };
     }
     public function register(User $user): void
     {

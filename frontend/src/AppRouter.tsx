@@ -18,11 +18,8 @@ export default function AppRouter() {
     const sessionToken = sessionStorage.getItem("token");
     if (sessionToken) {
       setIsLogged(true);
-    } else {
-      // Redirect to login page
-      setIsLogged(false);
     }
-  });
+  }, []);
 
   return (
     <MantineProvider

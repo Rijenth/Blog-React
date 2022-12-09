@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useJwt } from "react-jwt";
 
-import { Loader, Title, Button } from "@mantine/core";
+import { Loader, Title, Button,Text } from "@mantine/core";
 import LogoutBtn from "../components/logout.btn";
 
 interface IdecodedToken {
-  email: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  role: string;
+  iss: string;
+  aud: string;
+  iat: number;
+  exp: number;
+  user: string;
+  roles: string;
+  id: number;
 }
 
 interface IuseJwt {
@@ -20,20 +21,36 @@ interface IuseJwt {
 
 export default function User() {
   const [loading, setLoading] = useState(true);
-
-  const { decodedToken, isExpired } = useJwt<IuseJwt>(
-    sessionStorage.getItem("token") as string
-  );
+  const [decodedToken, setDecoded] = useState({
+    iss: "",
+    aud: "",
+    iat: 0,
+    exp: 0,
+    user: "",
+    roles: "",
+    id: 0,
+  });
+  const _decodeToken = (token: string): IdecodedToken => {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    return JSON.parse(window.atob(base64));
+  };
 
   useEffect(() => {
-    console.log(decodedToken);
-    console.log(isExpired);
     const sessionToken = sessionStorage.getItem("token");
     if (sessionToken) {
-      console.log("User is logged in");
+      // decode the token 
+      const decodedToken = _decodeToken(sessionToken);
+      setDecoded(decodedToken);
+      if(decodedToken.exp < Date.now() / 1000) {
+        // token expired
+        sessionStorage.removeItem("token");
+        window.location.href = "/auth/login";
+      }
+
     }
     setLoading(false);
-  });
+  },[]);
 
   const UserInfo = (): JSX.Element => {
     // Je sais y a les erreurs de decodedToken '' does not exist on type 'IuseJwt'
@@ -41,11 +58,9 @@ export default function User() {
       <div>
         <LogoutBtn />
         <Title>User Info</Title>
-        <p>Username: {decodedToken?.username}</p>
-        <p>First Name: {decodedToken?.firstName}</p>
-        <p>Last Name: {decodedToken?.lastName}</p>
-        <p>Gender: {decodedToken?.gender}</p>
-        <p>Role: {decodedToken?.role}</p>
+        <Text>Username: {decodedToken.user}</Text>
+        <Text>Roles: {decodedToken.roles}</Text>
+        <Text>Id: {decodedToken.id}</Text>
         <Button
           onClick={() => {
             window.location.href = "/";

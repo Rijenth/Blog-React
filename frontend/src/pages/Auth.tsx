@@ -43,8 +43,16 @@ function RegisterForm(): JSX.Element {
     registerData.append("lastName", registerValues.lastName);
     registerData.append("gender", registerValues.gender);
     registerData.append("password", registerValues.password);
-    registerData.append("role", registerValues.role);
+    registerData.append("roles", registerValues.role);
+
+    fetch("http://localhost:5656/api/register", {
+      method: "POST",
+      body: registerData,
+    }).then(()=> {
+      window.location.href = "/auth/login";
+    });
   };
+
   return (
     <div className={classes.form}>
       <h1>Inscription : </h1>
@@ -201,46 +209,44 @@ function LoginForm(): JSX.Element {
   const { classes } = useStyles();
 
   const [loginValues, setLoginValues] = useState({
-    email: "",
+    username: "",
     password: "",
   });
 
-  const data =
-    loginValues.email.trim().length > 0 && !loginValues.email.includes("@")
-      ? ["gmail.com", "outlook.com", "yahoo.com"].map(
-          (provider) => `${loginValues.email}@${provider}`
-        )
-      : [];
 
   const handleSubmit = async (): Promise<void> => {
     let loginData = new FormData();
-    loginData.append("email", loginValues.email);
+    loginData.append("username", loginValues.username);
     loginData.append("password", loginValues.password);
 
     const response = await fetch("http://localhost:5656/api/login", {
       method: "POST",
       body: loginData,
     }).then((response) => {
-      /* if (response.ok) {
-        window.location.href = "/";
-      } */
-      console.log(response);
+      if (response.status === 200) {
+        response.json().then((data) => {
+          sessionStorage.setItem("token", data.token);
+          window.location.href = "/";
+        });
+      } else {
+        alert("Erreur de connexion");
+        console.warn(response);
+      }
     });
   };
 
   return (
     <div className={classes.form}>
       <h1>Connexion : </h1>
-      <Autocomplete
-        data={data}
-        placeholder="Email"
-        value={loginValues.email}
+      <TextInput
+        placeholder="username"
+        value={loginValues.username}
         className={classes.input}
-        onChange={(event) => setLoginValues({ ...loginValues, email: event })}
+        onChange={(event) => setLoginValues({ ...loginValues, username: event.target.value })}
         error={
-          loginValues.email.trim().length > 0 &&
-          !emailRegex.test(loginValues.email)
-            ? "Email invalide"
+          loginValues.username.trim().length > 0 &&
+          !usernameRegex.test(loginValues.username)
+            ? "Nom d'utilisateur invalide"
             : undefined
         }
       />
@@ -264,9 +270,8 @@ function LoginForm(): JSX.Element {
       <Button
         onClick={handleSubmit}
         disabled={
-          loginValues.email.trim().length === 0 ||
-          loginValues.password.trim().length === 0 ||
-          !emailRegex.test(loginValues.email)
+          loginValues.username.trim().length === 0 ||
+          loginValues.password.trim().length === 0
         }
       >
         Se connecter

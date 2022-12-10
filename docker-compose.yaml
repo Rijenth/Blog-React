@@ -2,6 +2,7 @@ version: '3.1'
 
 services:
     backend:
+        container_name: Backend
         build:
             context: ./backend
             dockerfile: Dockerfile
@@ -11,6 +12,7 @@ services:
             - ./backend/app:/var/www/html
 
     db:
+        container_name: Database
         image: 'mariadb'
         restart: always
         environment:
@@ -22,6 +24,7 @@ services:
             - ./backend/database/dump.sql:/docker-entrypoint-initdb.d/dump.sql
 
     phpmyadmin:
+        container_name: PhpMyAdmin
         image: phpmyadmin
         restart: always
         ports:
@@ -30,6 +33,7 @@ services:
             - PMA_ARBITRARY=1
 
     frontend:
+        container_name: Frontend
         build:
             context: ./frontend
             dockerfile: Dockerfile

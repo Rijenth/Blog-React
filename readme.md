@@ -1,12 +1,9 @@
-# Comment lancer le truc
+# Comment lancer le projet
 
-mettre à jour le conteneur front + lancer le up :
+`git clone https://github.com/Rijenth/react_blog_api.git && cd react_blog_api/backend/app`
+
+`composer install`
 
 `docker-compose up -d --build`
 
-Testé et approuvé sur Windows + Linux
-
-## PROBLEME COMPOSER
-
-Bizarrement composer n'installe pas Firebase Jwt, sans ce dernier on ne peut pas se login.
-Si le problème n'a pas été fixer d'ici là un bouton "créer une session dev", imitera le login en bypassant l'encryption du backend.
+Lien de l'application : url('http://localhost:3000/')

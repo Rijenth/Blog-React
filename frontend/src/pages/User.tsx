@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useJwt } from "react-jwt";
 
-import { Loader, Title, Button,Text } from "@mantine/core";
+import { Loader, Title, Button, Text } from "@mantine/core";
 import LogoutBtn from "../components/logout.btn";
 
 interface IdecodedToken {
@@ -39,18 +39,19 @@ export default function User() {
   useEffect(() => {
     const sessionToken = sessionStorage.getItem("token");
     if (sessionToken) {
-      // decode the token 
+      // decode the token
       const decodedToken = _decodeToken(sessionToken);
       setDecoded(decodedToken);
-      if(decodedToken.exp < Date.now() / 1000) {
+      if (decodedToken.exp < Date.now() / 1000) {
+        // alert
+        alert("Votre session a expiré, veuillez vous reconnecter");
         // token expired
         sessionStorage.removeItem("token");
         window.location.href = "/auth/login";
       }
-
     }
     setLoading(false);
-  },[]);
+  }, []);
 
   const UserInfo = (): JSX.Element => {
     // Je sais y a les erreurs de decodedToken '' does not exist on type 'IuseJwt'

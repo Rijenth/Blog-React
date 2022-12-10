@@ -48,7 +48,7 @@ function RegisterForm(): JSX.Element {
     fetch("http://localhost:5656/api/register", {
       method: "POST",
       body: registerData,
-    }).then(()=> {
+    }).then(() => {
       window.location.href = "/auth/login";
     });
   };
@@ -212,8 +212,6 @@ function LoginForm(): JSX.Element {
     username: "",
     password: "",
   });
-
-
   const handleSubmit = async (): Promise<void> => {
     let loginData = new FormData();
     loginData.append("username", loginValues.username);
@@ -242,7 +240,9 @@ function LoginForm(): JSX.Element {
         placeholder="username"
         value={loginValues.username}
         className={classes.input}
-        onChange={(event) => setLoginValues({ ...loginValues, username: event.target.value })}
+        onChange={(event) =>
+          setLoginValues({ ...loginValues, username: event.target.value })
+        }
         error={
           loginValues.username.trim().length > 0 &&
           !usernameRegex.test(loginValues.username)
@@ -290,8 +290,7 @@ function LoginForm(): JSX.Element {
 
 // fake session
 const fakeSessionToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNyeUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6InNldHN1ZGFuIiwiZmlyc3ROYW1lIjoibnRtIiwibGFzdE5hbWUiOiJzZXgiLCJnZW5kZXIiOiJ1bmRlZmluZWQiLCJyb2xlIjoidXNlciJ9.zBtV7ufhCElTk7sWI3lJLsxsCRwfAGb2Y7_rK4vAs3Q";
-
+  "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IjE2NDc3ODg4MDAiLCJleHAiOjE2NzA2NzUwMTAsImlhdCI6MTY3MDY3NTAxMH0.MepcLQWPsfa5ADImQUEdzsXeEtt0s6898qoWw7TeLTw";
 export default function Auth(): JSX.Element {
   // use react-router-dom to get the type of the page
   const { type } = useParams<{ type: string }>();

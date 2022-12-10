@@ -28,6 +28,7 @@ services:
             - '8080:80'
         environment:
             - PMA_ARBITRARY=1
+
     frontend:
         build:
             context: ./frontend
@@ -38,5 +39,6 @@ services:
             - ./frontend:/app
             # use npm instead of yarn
         command: sh -c "npm rebuild esbuild && yarn dev"
+        restart: always
         
 

@@ -6,4 +6,9 @@
 
 `docker-compose up -d --build`
 
-Lien de l'application : [Lien](http://localhost:3000/)
+## Contributeurs
+| Prénom  | Nom          |
+| ------- | ------------ |
+| Rijenth | Arumainathan |
+| Kader   | Bakayoko     |
+| Ethan   | Videau       |
